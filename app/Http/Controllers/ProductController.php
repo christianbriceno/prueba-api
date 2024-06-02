@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Product;
+use Illuminate\Support\Str;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductCollection;
+use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -16,9 +19,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::applySorts(request('sort'))->get();
 
-        return response()->json(['products' => $products, 'code' => 200]);
+        return ProductCollection::make($products);
     }
 
     /**
@@ -42,7 +45,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return response()->json(['product' => $product, 'code' => 200]);
+        return ProductResource::make($product);
     }
 
     /**
