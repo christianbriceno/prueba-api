@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ListProductTest extends TestCase
+class IndexProductTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,7 +22,7 @@ class ListProductTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 [
-                    'type' => 'articles',
+                    'type' => 'Products',
                     'id' => (string) $products[0]->getRouteKey(),
                     'attributes' => [
                         'name' => $products[0]->name,
@@ -33,7 +33,7 @@ class ListProductTest extends TestCase
                     ]
                 ],
                 [
-                    'type' => 'articles',
+                    'type' => 'Products',
                     'id' => (string) $products[1]->getRouteKey(),
                     'attributes' => [
                         'name' => $products[1]->name,
@@ -44,7 +44,7 @@ class ListProductTest extends TestCase
                     ]
                 ],
                 [
-                    'type' => 'articles',
+                    'type' => 'Products',
                     'id' => (string) $products[2]->getRouteKey(),
                     'attributes' => [
                         'name' => $products[2]->name,
@@ -60,28 +60,6 @@ class ListProductTest extends TestCase
             ],
             'meta' => [
                 'products_count' => 3
-            ]
-        ]);
-    }
-
-    /** @test */
-    public function can_fetch_single_product()
-    {
-        $product = Product::factory()->create();
-
-        $response = $this->getJson(route('products.show', $product->id));
-
-        $response->assertExactJson([
-            'data' => [
-                'type' => 'articles',
-                'id' => (string) $product->getRouteKey(),
-                'attributes' => [
-                    'name' => $product->name,
-                    'price' => $product->price
-                ],
-                'links' => [
-                    'self' => route('products.show', $product->id)
-                ]
             ]
         ]);
     }

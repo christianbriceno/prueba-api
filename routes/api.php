@@ -31,12 +31,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('products-that-a-user-has-purchased/{user}', [ProductController::class, 'productsThatAUserHasPurchased'])->name('products-that-a-user-has-purchased');
     // Route::get('products-of-an-order/{order}', [OrderController::class, 'productsOfAnOrder'])->name('products-of-an-order');
 
-    Route::resource('users', UserController::class)->only(['index', 'show', 'store']);
+    Route::apiResource('users', UserController::class)->only(['index', 'show', 'store']);
+    // Route::apiResource('product.order', OrderController::class);
     // Route::resource('products', ProductController::class)->except(['create', 'edit']);
-    Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    // Route::resource('orders', OrderController::class)->only(['index', 'show']);
 });
 
-Route::resource('products', ProductController::class)->except(['create', 'edit']);
+Route::apiResource('products', ProductController::class);
+Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
 
 // Rutas Públicas
 Route::post('register', [AuthController::class, 'register'])->name('register');

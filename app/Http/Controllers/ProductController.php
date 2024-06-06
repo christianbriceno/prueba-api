@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Product;
-use Illuminate\Support\Str;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductCollection;
 use App\Http\Requests\UpdateProductRequest;
@@ -32,9 +31,9 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $product = Product::create($request->validated());
+        $product = Product::create($request->validated('data.attributes'));
 
-        return response()->json(['product' => $product, 'code' => 200]);
+        return ProductResource::make($product);
     }
 
     /**
@@ -57,9 +56,9 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $product->update($request->validated('data.attributes'));
 
-        return response()->json(['product' => $product, 'code' => 200]);
+        return ProductResource::make($product);
     }
 
     /**
@@ -72,7 +71,7 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return response()->json(['product' => $product, 'code' => 200]);
+        return ProductResource::make($product);
     }
 
     /**

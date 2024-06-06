@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderCollection;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -13,9 +15,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::without('products')->get();
+        $orders = Order::ApplySorts(request('sort'))->get();
 
-        return response()->json(['orders' => $orders, 'code' => 200]);
+        return OrderCollection::make($orders);
     }
 
     /**
@@ -26,7 +28,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return response()->json(['order' => $order, 'code' => 200]);
+        return OrderResource::make($order);
     }
 
     /**
